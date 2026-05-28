@@ -3,6 +3,7 @@ package com.hms.backend.dto;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class AppointmentDTO {
 
@@ -14,6 +15,9 @@ public class AppointmentDTO {
 
     @NotNull(message = "Appointment date is required")
     private LocalDate appointmentDate;
+
+    @NotNull(message = "Appointment time is required")
+    private LocalTime appointmentTime;
 
     private String status;
 
@@ -39,6 +43,14 @@ public class AppointmentDTO {
 
     public void setAppointmentDate(LocalDate appointmentDate) {
         this.appointmentDate = appointmentDate;
+    }
+
+    public LocalTime getAppointmentTime() {
+        return appointmentTime;
+    }
+
+    public void setAppointmentTime(LocalTime appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 
     public String getStatus() {

@@ -19,7 +19,7 @@ public class AppointmentController {
         this.service = service;
     }
 
-    // CREATE APPOINTMENT
+    // CREATE
     @PostMapping
     public Appointment createAppointment(
             @Valid @RequestBody AppointmentDTO dto) {
@@ -27,13 +27,22 @@ public class AppointmentController {
         return service.createAppointment(dto);
     }
 
-    // GET ALL APPOINTMENTS
+    // GET ALL
     @GetMapping
     public List<Appointment> getAllAppointments() {
         return service.getAllAppointments();
     }
 
-    // DELETE APPOINTMENT
+    // RESCHEDULE
+    @PutMapping("/{id}")
+    public Appointment rescheduleAppointment(
+            @PathVariable Long id,
+            @RequestBody AppointmentDTO dto) {
+
+        return service.rescheduleAppointment(id, dto);
+    }
+
+    // DELETE
     @DeleteMapping("/{id}")
     public String deleteAppointment(@PathVariable Long id) {
 

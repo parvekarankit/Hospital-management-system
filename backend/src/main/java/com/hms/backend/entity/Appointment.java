@@ -3,6 +3,7 @@ package com.hms.backend.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 public class Appointment {
@@ -12,6 +13,8 @@ public class Appointment {
     private Long id;
 
     private LocalDate appointmentDate;
+
+    private LocalTime appointmentTime;
 
     private String status;
 
@@ -33,6 +36,14 @@ public class Appointment {
 
     public void setAppointmentDate(LocalDate appointmentDate) {
         this.appointmentDate = appointmentDate;
+    }
+
+    public LocalTime getAppointmentTime() {
+        return appointmentTime;
+    }
+
+    public void setAppointmentTime(LocalTime appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 
     public void setId(Long id) {

@@ -3,5 +3,15 @@ package com.hms.backend.repository;
 import com.hms.backend.entity.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public interface AppointmentRepository
+        extends JpaRepository<Appointment, Long> {
+
+    boolean existsByDoctorIdAndAppointmentDateAndAppointmentTime(
+            Long doctorId,
+            LocalDate appointmentDate,
+            LocalTime appointmentTime
+    );
 }

@@ -28,8 +28,21 @@ public class AppointmentService {
         this.doctorRepository = doctorRepository;
     }
 
-    // CREATE APPOINTMENT
+    // SCHEDULE APPOINTMENT
     public Appointment createAppointment(AppointmentDTO dto) {
+
+        boolean alreadyBooked =
+                appointmentRepository
+                        .existsByDoctorIdAndAppointmentDateAndAppointmentTime(
+                                dto.getDoctorId(),
+                                dto.getAppointmentDate(),
+                                dto.getAppointmentTime()
+                        );
+
+        if (alreadyBooked) {
+            throw new RuntimeException(
+                    "Doctor is not available at this time");
+        }
 
         Patient patient = patientRepository.findById(dto.getPatientId())
                 .orElseThrow(() ->
@@ -44,7 +57,8 @@ public class AppointmentService {
         appointment.setPatient(patient);
         appointment.setDoctor(doctor);
         appointment.setAppointmentDate(dto.getAppointmentDate());
-        appointment.setStatus(dto.getStatus());
+        appointment.setAppointmentTime(dto.getAppointmentTime());
+        appointment.setStatus("Scheduled");
 
         return appointmentRepository.save(appointment);
     }
@@ -52,6 +66,37 @@ public class AppointmentService {
     // GET ALL
     public List<Appointment> getAllAppointments() {
         return appointmentRepository.findAll();
+    }
+
+    // RESCHEDULE APPOINTMENT
+    public Appointment rescheduleAppointment(
+            Long appointmentId,
+            AppointmentDTO dto) {
+
+        Appointment appointment =
+                appointmentRepository.findById(appointmentId)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Appointment not found"));
+
+        boolean alreadyBooked =
+                appointmentRepository
+                        .existsByDoctorIdAndAppointmentDateAndAppointmentTime(
+                                dto.getDoctorId(),
+                                dto.getAppointmentDate(),
+                                dto.getAppointmentTime()
+                        );
+
+        if (alreadyBooked) {
+            throw new RuntimeException(
+                    "Doctor already booked at this slot");
+        }
+
+        appointment.setAppointmentDate(dto.getAppointmentDate());
+        appointment.setAppointmentTime(dto.getAppointmentTime());
+        appointment.setStatus("Rescheduled");
+
+        return appointmentRepository.save(appointment);
     }
 
     // DELETE
